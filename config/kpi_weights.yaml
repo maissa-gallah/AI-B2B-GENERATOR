@@ -1,0 +1,136 @@
+# ==============================================================================
+# HEIDI SYSTEMS - B2B LEAD QUALIFICATION & DISCOVERY CONFIGURATION
+# ==============================================================================
+
+scoring_version: "1.0.0"
+
+# Blended scoring formula weights:
+# Final Score = (raw_weight * raw_score) + (normalized_weight * normalized_score_on_known_kpis)
+# Ensures missing portfolio data (e.g., unpublished unit counts) does not penalize active Berlin property managers.
+scoring_formula:
+  raw_weight: 0.70
+  normalized_weight: 0.30
+  insufficient_info_completeness_threshold: 35.0
+
+priority_thresholds:
+  high_min_score: 70.0
+  high_min_completeness: 50.0
+  medium_min_score: 45.0
+
+kpis:
+  berlin_presence:
+    max_score: 15.0
+    description: "Headquarters or active operational property management coverage in Berlin."
+    scores:
+      berlin_hq_and_operations: 15.0
+      greater_berlin_or_secondary_coverage: 10.0
+      no_berlin_evidence: 0.0
+
+  property_types:
+    max_score: 20.0
+    description: "Relevance of managed property types to submetering (WEG, Mietverwaltung, Gewerbe, SEV)."
+    scores:
+      both_weg_and_mietverwaltung: 20.0
+      either_weg_or_mietverwaltung: 16.0
+      gewerbe_or_sev_only: 12.0
+      non_management_only: 0.0
+
+  metering_relevance:
+    max_score: 20.0
+    description: "Evidence of heating/water billing, HKVO compliance, submetering, smoke detectors, or ERP/digital portals."
+    scores:
+      billing_and_digital_erp: 20.0
+      billing_or_technical_mgmt: 15.0
+      general_full_service_mgmt: 10.0
+      none: 0.0
+
+  managed_units:
+    max_score: 15.0
+    description: "Total managed residential and commercial units (Wohneinheiten / Gewerbeeinheiten)."
+    tiers:
+      - min_units: 2000
+        score: 15.0
+      - min_units: 500
+        score: 12.0
+      - min_units: 100
+        score: 9.0
+      - min_units: 10
+        score: 5.0
+      - min_units: 1
+        score: 2.0
+
+  managed_buildings:
+    max_score: 10.0
+    description: "Total managed buildings / properties (Objekte / Liegenschaften / Häuser)."
+    tiers:
+      - min_buildings: 50
+        score: 10.0
+      - min_buildings: 20
+        score: 8.0
+      - min_buildings: 5
+        score: 5.0
+      - min_buildings: 1
+        score: 2.0
+
+  decision_makers:
+    max_score: 10.0
+    description: "Availability of relevant decision-makers (Geschäftsführer, Technischer Leiter) and contact channels."
+    scores:
+      named_leader_with_direct_contact: 10.0
+      named_leader_with_company_contact: 7.0
+      generic_contact_only: 3.0
+      no_contact: 0.0
+
+  company_size:
+    max_score: 5.0
+    description: "Organizational size based on employee count (Mitarbeiter)."
+    tiers:
+      - min_employees: 20
+        score: 5.0
+      - min_employees: 5
+        score: 3.0
+      - min_employees: 1
+        score: 1.0
+
+  growth_signals:
+    max_score: 5.0
+    description: "Modernization, digitalization, association memberships (VDIV/BVI), or active expansion/hiring signals."
+    scores:
+      two_or_more_signals: 5.0
+      one_signal: 3.0
+      no_signals: 0.0
+
+discovery:
+  german_search_queries:
+    - "Hausverwaltung Berlin WEG Mietverwaltung"
+    - "Immobilienverwaltung Berlin GmbH"
+    - "WEG-Verwaltung Berlin Wohneinheiten"
+    - "Mietverwaltung Berlin Zinshausverwaltung"
+    - "Gewerbeimmobilienverwaltung Berlin"
+    - "Immobilienmanagement Berlin Hausverwaltung"
+    - "Hausverwaltung Berlin Betriebskostenabrechnung"
+    - "Hausverwaltung Berlin VDIV Mitglied"
+
+  excluded_domains:
+    - "immobilienscout24.de"
+    - "immowelt.de"
+    - "immonet.de"
+    - "gelbeseiten.de"
+    - "dasoertliche.de"
+    - "11880.com"
+    - "yelp.de"
+    - "golocal.de"
+    - "werzuwem.de"
+    - "wlw.de"
+    - "kununu.com"
+    - "stepstone.de"
+    - "indeed.com"
+    - "linkedin.com"
+    - "xing.com"
+    - "facebook.com"
+    - "instagram.com"
+    - "wikipedia.org"
+    - "heidisystems.com"
+    - "berlin.de"
+    - "hausverwaltung-ratgeber.de"
+    - "verwalter-vergleich.de"

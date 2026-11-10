@@ -1,0 +1,26 @@
+services:
+  app:
+    build: .
+    container_name: heidi-b2b-lead-generator
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data
+      - ./config:/app/config
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mongodb
+    command: uv run uvicorn src.api:app --host 0.0.0.0 --port 8000
+
+  mongodb:
+    image: mongo:7.0
+    container_name: heidi-leads-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+volumes:
+  mongodb_data:
